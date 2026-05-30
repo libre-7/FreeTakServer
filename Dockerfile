@@ -13,19 +13,20 @@ ENV FTS_CONFIG_PATH="/opt/FTSData/FTSConfig.yaml"
 ENV FTS_MAINPATH="/FreeTAKServer/FreeTAKServer"
 
 WORKDIR /FreeTAKServer
-COPY --chown=freetak:freetak . .
+COPY . .
 COPY --chown=freetak:freetak ./FreeTAKServer /FreeTAKServer
 
 # Pre-create ExCheck subdirs that FTS writes to at runtime
 RUN mkdir -p /FreeTAKServer/FreeTAKServer/ExCheck/checklist /FreeTAKServer/FreeTAKServer/ExCheck/template && \
-    chown -R freetak:freetak /FreeTAKServer/FreeTAKServer/ExCheck
-
-USER freetak
+    chown -R freetak:freetak /FreeTAKServer
 
 # cryptography must be pinned (<38): pyOpenSSL 22.0.0 accesses
 # _lib.X509_V_FLAG_NOTIFY_POLICY which was removed from cryptography 38+
 RUN pip3 install --upgrade pip setuptools wheel && \
     pip3 install cryptography==36.0.2 --no-build-isolation -e /FreeTAKServer
+
+# Drop privileges for runtime
+USER freetak
 
 # DataPackagePort
 EXPOSE 8080
