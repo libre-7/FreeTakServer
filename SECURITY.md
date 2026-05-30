@@ -2,14 +2,12 @@
 
 ## Supported Versions
 
-FTS is currently supporting those versions with security updates.
+This fork tracks upstream FreeTAKServer releases.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| >1.8.x  | :x:                |
-| 1.9.x   | :white_check_mark: |
-| < 2.X   | :white_check_mark: |
+| 2.2.x   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
-please report a vulnerability as an issue, our team will evaluate it and address in the proper time
+Please open a GitHub issue in this repository or report to the upstream FreeTAKTeam.

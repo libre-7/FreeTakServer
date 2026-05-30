@@ -55,7 +55,9 @@ asyncio="3.4.3"
 xmltodict="*"
 pyzmq="*"
 digitalpy="0.3.13.7"
-opentelemetry-sdk="*"
+opentelemetry-api="1.14.0"
+opentelemetry-sdk="1.14.0"
+opentelemetry-semantic-conventions="0.35b0"
 PyJWT="*"
 FreeTAKServer_UI = {version = "2.1", optional = true}
 pytak = {version = "5.4.1", optional = true}

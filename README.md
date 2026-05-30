@@ -1,11 +1,40 @@
 # FreeTAKServer [![Downloads](https://pepy.tech/badge/freetakserver)](https://pepy.tech/project/freetakserver) ![PyPI](https://img.shields.io/pypi/v/FreeTAKServer) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/FreeTAKTeam/FreeTakServer) ![Lines of code](https://img.shields.io/tokei/lines/github.com/FreeTAKTeam/FreeTakServer)
 
+> **⚠️ This is the [libre-7](https://github.com/libre-7/freetakserver) fork, tracking upstream [FreeTAKTeam/FreeTakServer](https://github.com/FreeTAKTeam/FreeTakServer) v2.2.1.**
+>
+> Upstream docs: [FreeTAKServer Documentation](https://freetakteam.github.io/FreeTAKServer-User-Docs/)
+
 ![the Parrot is not dead](https://user-images.githubusercontent.com/60719165/226138056-a2b1076c-fd4c-4488-b330-55e57f9ecc78.png)
 
 Welcome to the FreeTakServer (FTS) git repository.
 
 FTS is a Python3 implementation of a TAK Server for devices like [ATAK](https://play.google.com/store/apps/details?id=com.atakmap.app.civ), [WinTAK](https://1drv.ms/u/s!AtMVrrXVTu4YgSanKtSHIslxfRu5?e=ftVio7), and ITAK, it is cross-platform and runs from a multi node installation on AWS down to the Android edition.
 It's free and open source (released under the [Eclipse Public License](https://www.eclipse.org/legal/epl-2.0/).
+
+## Docker Quick Start
+
+```bash
+# Clone this repo
+git clone https://github.com/libre-7/freetakserver.git
+cd freetakserver
+
+# Build and start the server + UI
+docker compose up -d
+
+# Check logs
+docker logs freetakserver
+docker logs freetakserver-ui
+```
+
+The server is available on port 8087 (CoT), 8443 (SSL CoT), 8080 (Data Package).
+The Web UI is available at http://localhost:5000.
+
+Edit `compose.yaml` before first run to set your external IP:
+```yaml
+FTS_IP: 'your.server.ip.here'
+```
+
+All persistent data lives in Docker volumes (`free-tak-core-db`, `free-tak-ui-db`).
 
 ## User Documentation
 

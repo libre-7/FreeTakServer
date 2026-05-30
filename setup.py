@@ -10,7 +10,7 @@ setup(
     packages=find_packages(
         include=["FreeTAKServer", "FreeTAKServer.*", "*.json", "*.ini", "*.conf"]
     ),
-    version="0.2.1.0",
+    version="2.2.1",
     license="EPL-2.0",
     description="An open source server for the TAK family of applications.",
     # long_description=long_description,
@@ -67,7 +67,9 @@ setup(
         "xmltodict",
         "pyzmq",
         "digitalpy>=0.3.13.7",
-        "opentelemetry-sdk",
+        "opentelemetry-api==1.14.0",
+        "opentelemetry-sdk==1.14.0",
+        "opentelemetry-semantic-conventions==0.35b0",
         "PyJWT"
     ],
     extras_require={
@@ -79,6 +81,6 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: Eclipse Public License 2.0 (EPL-2.0)",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.11",
     ],
 )
