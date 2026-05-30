@@ -22,7 +22,8 @@ RUN mkdir -p /FreeTAKServer/FreeTAKServer/ExCheck/checklist /FreeTAKServer/FreeT
 
 # cryptography must be pinned (<38): eventlet/pyOpenSSL may pull latest
 # which drops X509_V_FLAG_NOTIFY_POLICY
-RUN pip3 install cryptography==36.0.2 --no-build-isolation -e /FreeTAKServer
+# MarkupSafe must be pinned (<2.1): Jinja2 2.11.2 uses soft_unicode
+RUN pip3 install cryptography==36.0.2 markupsafe==2.0.1 --no-build-isolation -e /FreeTAKServer
 
 # Drop privileges for runtime
 USER freetak
