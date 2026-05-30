@@ -25,7 +25,7 @@ RUN mkdir -p /FreeTAKServer/FreeTAKServer/ExCheck/checklist /FreeTAKServer/FreeT
 # - markupsafe<2.1: Jinja2 uses soft_unicode
 # - werkzeug<2.1: Flask expects itsdangerous.json
 # - itsdangerous<2.1: >=2.1 removed json module
-RUN pip3 install cryptography==36.0.2 markupsafe==2.0.1 werkzeug==2.0.3 itsdangerous==2.0.1 --no-build-isolation -e /FreeTAKServer
+RUN pip3 install cryptography==36.0.2 markupsafe==2.0.1 werkzeug==2.0.3 itsdangerous==2.0.1 pyOpenSSL==22.0.0 --no-build-isolation -e /FreeTAKServer
 
 # Drop privileges for runtime
 USER freetak
