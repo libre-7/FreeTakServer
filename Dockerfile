@@ -8,6 +8,7 @@ USER freetak
 # This needs the trailing slash
 ENV FTS_DATA_PATH="/opt/FTSData/"
 ENV FTS_DB_PATH="/opt/FTSData/FreeTAKServer.db"
+ENV FTS_MAINPATH="/FreeTAKServer/FreeTAKServer"
 
 WORKDIR /FreeTAKServer
 COPY . .
