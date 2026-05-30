@@ -20,10 +20,13 @@ COPY --chown=freetak:freetak ./FreeTAKServer /FreeTAKServer
 RUN mkdir -p /FreeTAKServer/FreeTAKServer/ExCheck/checklist /FreeTAKServer/FreeTAKServer/ExCheck/template && \
     chown -R freetak:freetak /FreeTAKServer
 
-# cryptography must be pinned (<38): eventlet/pyOpenSSL may pull latest
-# which drops X509_V_FLAG_NOTIFY_POLICY
-# MarkupSafe must be pinned (<2.1): Jinja2 2.11.2 uses soft_unicode
-RUN pip3 install cryptography==36.0.2 markupsafe==2.0.1 --no-build-isolation -e /FreeTAKServer
+# Pin transitive deps for Flask 1.1.2 / Jinja 2.11.2 compatibility:
+# - cryptography<38: pyOpenSSL uses X509_V_FLAG_NOTIFY_POLICY
+# - markupsafe<2.1: Jinja2 uses soft_unicode
+# - werkzeug<2.1: Flask expects itsdangerous.json
+# - itsdangerous<2.1: >=2.1 removed json module
+RUN pip3 install --no-build-isolation -e /FreeTAKServer && \
+    pip3 install cryptography==36.0.2 markupsafe==2.0.1 werkzeug==2.0.3 itsdangerous==2.0.1
 
 # Drop privileges for runtime
 USER freetak
