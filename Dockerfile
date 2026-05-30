@@ -13,7 +13,9 @@ COPY . .
 COPY --chown=freetak:freetak ./FreeTAKServer /FreeTAKServer
 
 RUN pip3 install --upgrade pip setuptools wheel
-RUN pip3 install --no-build-isolation -e /FreeTAKServer
+# cryptography must be pinned (<38): pyOpenSSL 22.0.0 accesses
+# _lib.X509_V_FLAG_NOTIFY_POLICY which was removed from cryptography 38+
+RUN pip3 install cryptography==36.0.2 --no-build-isolation -e /FreeTAKServer
 
 # DataPackagePort
 EXPOSE 8080
