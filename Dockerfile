@@ -9,15 +9,16 @@ USER freetak
 ENV FTS_DATA_PATH="/opt/FTSData/"
 ENV FTS_DB_PATH="/opt/FTSData/FreeTAKServer.db"
 ENV FTS_MAINPATH="/FreeTAKServer/FreeTAKServer"
+ENV FTS_CONFIG_PATH="/opt/FTSData/FTSConfig.yaml"
 
 WORKDIR /FreeTAKServer
 COPY . .
 COPY --chown=freetak:freetak ./FreeTAKServer /FreeTAKServer
 
-RUN pip3 install --upgrade pip setuptools wheel
 # cryptography must be pinned (<38): pyOpenSSL 22.0.0 accesses
 # _lib.X509_V_FLAG_NOTIFY_POLICY which was removed from cryptography 38+
-RUN pip3 install cryptography==36.0.2 --no-build-isolation -e /FreeTAKServer
+RUN pip3 install --upgrade pip setuptools wheel && \
+    pip3 install cryptography==36.0.2 --no-build-isolation -e /FreeTAKServer
 
 # DataPackagePort
 EXPOSE 8080
@@ -32,5 +33,4 @@ EXPOSE 9000
 # APIPort
 EXPOSE 19023
 
-#ENTRYPOINT [ "python", "TAKfreeServer/run.py", "-p", "8087" ]
 ENTRYPOINT [ "python3", "-m", "FreeTAKServer.controllers.services.FTS", "-DataPackageIP", "0.0.0.0", "-AutoStart", "True"]
