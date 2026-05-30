@@ -2,7 +2,7 @@ FROM python:3.8
 
 # don't use root, let's not have FTS be used as a priv escalation in the wild
 RUN groupadd -r freetak && useradd -m -r -g freetak freetak
-RUN mkdir /opt/FTSData ; chown -R freetak:freetak /opt/FTSData ; chmod a+w /var/log
+RUN chmod a+w /var/log
 
 # This needs the trailing slash
 ENV FTS_DATA_PATH="/opt/FTSData/"
@@ -16,9 +16,14 @@ WORKDIR /FreeTAKServer
 COPY . .
 COPY --chown=freetak:freetak ./FreeTAKServer /FreeTAKServer
 
-# Pre-create ExCheck subdirs that FTS writes to at runtime
-RUN mkdir -p /FreeTAKServer/FreeTAKServer/ExCheck/checklist /FreeTAKServer/FreeTAKServer/ExCheck/template && \
-    chown -R freetak:freetak /FreeTAKServer
+# Pre-create ExCheck subdirs and FTSConfig.yaml to skip interactive wizard.
+# v1.9.8 MainConfig.py has first_start=True hardcoded and calls
+# ask_user_for_config() which blocks in Docker. We patch first_start
+# to False after the YAML is generated.
+RUN mkdir -p /opt/FTSData /FreeTAKServer/FreeTAKServer/ExCheck/checklist /FreeTAKServer/FreeTAKServer/ExCheck/template && \
+    printf "System:\n  FTS_MAINLOOP_DELAY: 100\n  FTS_DATABASE_TYPE: SQLite\nAddresses:\n  FTS_COT_PORT: 8087\n  FTS_SSLCOT_PORT: 8089\n  FTS_DP_ADDRESS: 0.0.0.0\n  FTS_USER_ADDRESS: 0.0.0.0\n  FTS_API_PORT: 19023\n  FTS_FED_PORT: 9000\n  FTS_API_ADDRESS: 0.0.0.0\nFileSystem:\n  FTS_DB_PATH: /opt/FTSData/FreeTAKServer.db\n  FTS_MAINPATH: /FreeTAKServer/FreeTAKServer\n  FTS_CERTS_PATH: /FreeTAKServer/FreeTAKServer/certs\n  FTS_EXCHECK_PATH: /FreeTAKServer/FreeTAKServer/ExCheck\n  FTS_DATAPACKAGE_PATH: /FreeTAKServer/FreeTAKServer/FreeTAKServerDataPackageFolder\n" > /opt/FTSData/FTSConfig.yaml && \
+    sed -i 's/first_start = True/first_start = False/' /FreeTAKServer/FreeTAKServer/controllers/configuration/MainConfig.py && \
+    chown -R freetak:freetak /FreeTAKServer /opt/FTSData
 
 # Pin transitive deps for Flask 1.1.2 / Jinja 2.11.2 compatibility:
 # - cryptography<38: pyOpenSSL uses X509_V_FLAG_NOTIFY_POLICY
