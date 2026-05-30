@@ -2,7 +2,7 @@ FROM python:3.8
 
 # don't use root, let's not have FTS be used as a priv escalation in the wild
 RUN groupadd -r freetak && useradd -m -r -g freetak freetak
-RUN mkdir /opt/FTSData ; chown -R freetak:freetak /opt/FTSData 
+RUN mkdir /opt/FTSData ; chown -R freetak:freetak /opt/FTSData ; chmod a+w /var/log 
 USER freetak 
 
 # This needs the trailing slash
